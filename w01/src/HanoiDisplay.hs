@@ -1,7 +1,7 @@
 module HanoiDisplay (largestDisk, boardToStr) where
 
 import Data.List
-import Spring13Homework2
+import Homework2
 
 largestDisk :: HanoiBoard -> Disk
 largestDisk [] = error "No disks"

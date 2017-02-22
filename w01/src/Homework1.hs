@@ -1,44 +1,26 @@
 module Homework1 (
-    exercise1
+    toDigits, toDigitsRev, doubleEveryOther, sumDigits, validate
 ) where
 
-import CodeWorld
+toDigits :: Integer -> [Integer]
+toDigits n = reverse (toDigitsRev n)
 
-frame :: Picture
-frame = rectangle 2.5 7.5
+toDigitsRev :: Integer -> [Integer]
+toDigitsRev n
+    | n <= 0 = []
+    | otherwise = n `mod` 10 : (toDigitsRev ((fromIntegral n) `div` 10))
 
-lightShape :: Picture
-lightShape = solidCircle 1
+-- Inefficient. TODO: Surely a better way?
+doubleEveryOther :: [Integer] -> [Integer]
+doubleEveryOther xs = reverse (doubleEveryOtherRev (reverse xs))
 
-coloredLightShape :: Color -> Picture
-coloredLightShape c = colored c lightShape
+doubleEveryOtherRev :: [Integer] -> [Integer]
+doubleEveryOtherRev [] = []
+doubleEveryOtherRev [x] = [x]
+doubleEveryOtherRev (x:y:xs) = x : (y*2) : doubleEveryOtherRev xs
 
-singleLight :: Color -> Bool -> Picture
-singleLight c True = coloredLightShape c
-singleLight _ False = coloredLightShape black
+sumDigits :: [Integer] -> Integer
+sumDigits n = sum (map sum (map toDigits n))
 
-redLight :: Bool -> Picture
-redLight on = translated 0 2.5 (singleLight red on)
-
-amberLight :: Bool -> Picture
-amberLight on = singleLight orange on
-
-greenLight :: Bool -> Picture
-greenLight on = translated 0 (-2.5) (singleLight green on)
-
-trafficLight :: Bool -> Bool -> Bool -> Picture
-trafficLight redOn amberOn greenOn = redLight redOn & amberLight amberOn &
-    greenLight greenOn & frame
-
-trafficLightAnimation :: Integer -> Picture
-trafficLightAnimation t
-    | t < 5 = trafficLight False False True
-    | t < 6 = trafficLight False True False
-    | t < 9 = trafficLight True False False
-    | otherwise = trafficLight True True False
-
-trafficLightController :: Double -> Picture
-trafficLightController t = trafficLightAnimation (round t `mod` 10)
-
-exercise1 :: IO ()
-exercise1 = animationOf trafficLightController
+validate :: Integer -> Bool
+validate n = (sumDigits (doubleEveryOther (toDigits n))) `mod` 10 == 0
