@@ -1,8 +1,8 @@
-name:                cis194-w02
+name:                cis194-w03
 version:             0.1.0.0
 -- synopsis:
 -- description:
-homepage:            https://github.com/githubuser/cis194-w02#readme
+homepage:            https://github.com/githubuser/cis194-w03#readme
 license:             BSD3
 license-file:        LICENSE
 author:              Daniel Holmes
@@ -15,29 +15,29 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     LogAnalysis
-                     , Log
+  exposed-modules:     Golf
   build-depends:       base >= 4.7 && < 5
+                     , split == 0.2.3.1
   default-language:    Haskell2010
 
-executable w02-exe
+executable cis194-w03-exe
   hs-source-dirs:      app
   main-is:             Main.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
-                     , cis194-w02
+                     , cis194-w03
   default-language:    Haskell2010
 
-test-suite w02-test
+test-suite cis194-w03-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
   build-depends:       base
-                     , cis194-w02
+                     , cis194-w03
                      , hspec == 2.4.1
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   default-language:    Haskell2010
 
 source-repository head
   type:     git
-  location: https://github.com/githubuser/cis194-w02
+  location: https://github.com/githubuser/cis194-w03

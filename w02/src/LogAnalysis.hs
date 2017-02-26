@@ -60,7 +60,6 @@ inOrder Leaf = []
 inOrder (Node l m r) = (inOrder l) ++ m : (inOrder r)
 
 whatWentWrong :: [LogMessage] -> [String]
-whatWentWrong [] = []
 whatWentWrong ms = severeErrors (inOrder (buildLog ms))
 
 severeErrors :: [LogMessage] -> [String]
