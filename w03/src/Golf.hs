@@ -2,6 +2,7 @@ module Golf where
 
 import Data.List.Split
 import Data.List
+import Data.Char
 
 skips :: [a] -> [[a]]
 skips x = map (skipAmount x) [1..(length x)]
@@ -24,28 +25,10 @@ localMaxima xs = map (\(_:b:_) -> b) (filter (\(a:b:c:_) -> b > a && b > c) (div
 --                             else localMaxima as
 --localMaxima _ = []
 
-histogramNums :: [Integer]
-histogramNums = [0..9]
-
-histogramLen :: Int
-histogramLen = length histogramNums
-
-histogramBase :: [String]
-histogramBase = (replicate histogramLen '=') : (intercalate "" (map show histogramNums)) : []
-
 histogram :: [Integer] -> String
-histogram l = intercalate "\n" (rows ++ histogramBase)
+histogram l = intercalate "\n" (rows ++ base)
                 where
-                    counts = histogramLengths l
-                    -- Strat - manually add a zero to list so maximum wont fail
-                    largestCount = maximum counts
-                    rows = map (\r -> map (\c -> if c >= r then '*' else ' ') counts) (reverse [1..largestCount])
-                    --newStars = map (pad ' ' longestStar) stars
-
-histogramLengths :: [Integer] -> [Int]
-histogramLengths l = map (\n -> length (filter (==n) l)) histogramNums
-
-pad :: a -> Int -> [a] -> [a]
-pad c l x
-    | (length x) >= l = x
-    | otherwise = pad c l (c : x)
+                    nums = [0..9]
+                    base = map (\_ -> '=') nums : map (intToDigit . fromIntegral) nums : []
+                    counts = map (\n -> (length . (filter (==n))) l) nums
+                    rows = map (\r -> map (\c -> if c >= r then '*' else ' ') counts) (reverse [1..(maximum counts)])
