@@ -24,14 +24,24 @@ localMaxima x = map (!! 1) (filter (\[a,b,c] -> b > a && b > c) (divvy 3 1 x))
 --localMaxima x = map (\[_,b,_] -> b) (filter (\[a,b,c] -> b > a && b > c) (divvy 3 1 x))
 
 {-
+  1. We get the number of occurrences of each possible num, paired with the num itself in c
+  2. We find the maximum (m) which tells us how high each column needs to be
+  3. with each count we create each column, then transpose the resulting table to allow for correct string output
+-}
+histogram :: [Integer] -> String
+histogram l = unlines $ transpose [replicate (m-d) ' ' ++ replicate d '*' ++ "=" ++ show n | (n,d) <- c]
+                where
+                    c = [(n, length $ (filter (==n)) l) | n <- [0..9]]
+                    m = maximum (map snd c)
+
+{-
   1. Find the counts of each possible number (c)
   2. Create each row initialised with it's number (reverse [1..(maximum c)])
   3. Map each row number to a row of characters, one for each possible number. Use * if the row should show a dot (the
      count for this column number is >= the row number) otherwise ' '
   4. Join this together with the base x axis0
 -}
-histogram :: [Integer] -> String
-histogram l = (unlines r) ++ "==========\n0123456789"
-                where
-                    c = [(length . (filter (==n))) l | n <- [0..9]]
-                    r = map (\r -> [if d >= r then '*' else ' ' | d <- c]) (reverse [1..(maximum c)])
+--histogram l = (unlines r) ++ "==========\n0123456789\n"
+--                where
+--                    c = [(length . (filter (==n))) l | n <- [0..9]]
+--                    r = map (\r -> [if d >= r then '*' else ' ' | d <- c]) (reverse [1..(maximum c)])

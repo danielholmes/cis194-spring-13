@@ -40,14 +40,14 @@ main = hspec $ do
     describe "histogram" $ do
         it "returns Empty for Empty" $
             histogram [] `shouldBe` "==========\n\
-                                    \0123456789"
+                                    \0123456789\n"
 
         it "returns correct for example 1" $
             histogram [1,1,1,5] `shouldBe` " *        \n\
                                            \ *        \n\
                                            \ *   *    \n\
                                            \==========\n\
-                                           \0123456789"
+                                           \0123456789\n"
 
         it "returns correct for example 2" $
             histogram  [1,4,5,4,6,6,3,4,2,4,9] `shouldBe` "    *     \n\
@@ -55,4 +55,4 @@ main = hspec $ do
                                                           \    * *   \n\
                                                           \ ******  *\n\
                                                           \==========\n\
-                                                          \0123456789"
+                                                          \0123456789\n"
