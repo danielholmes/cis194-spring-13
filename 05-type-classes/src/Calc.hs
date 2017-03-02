@@ -21,18 +21,26 @@ instance Expr ExprT where
     mul = Mul
     lit = Lit
 
-{- Bool Expressions
-data ExprBool = LitB Integer
-    | AddB ExprBool ExprBool
-    | MulB ExprBool ExprBool
-    deriving (Show, Eq)
+instance Expr Integer where
+    add = (+)
+    mul = (*)
+    lit = id
 
 instance Expr Bool where
-    add = AddB
-    mul = MulB
-    lit = LitB
+    add = (||)
+    mul = (&&)
+    lit = (>0)
 
-evalBool :: ExprBool -> Bool
-evalBool (LitB x) = x > 0
-evalBool (AddB a b) = (evalBool a) || (evalBool b)
-evalBool (MulB a b) = (evalBool a) && (evalBool b)-}
+newtype MinMax = MinMax Integer deriving (Eq, Show)
+
+instance Expr MinMax where
+    add (MinMax a) (MinMax b) = MinMax (max a b)
+    mul (MinMax a) (MinMax b) = MinMax (min a b)
+    lit = MinMax
+
+newtype Mod7 = Mod7 Integer deriving (Eq, Show)
+
+instance Expr Mod7 where
+    add (Mod7 a) (Mod7 b) = Mod7 ((a + b) `mod` 7)
+    mul (Mod7 a) (Mod7 b) = Mod7 ((a * b) `mod` 7)
+    lit a = Mod7 (a `mod` 7)
