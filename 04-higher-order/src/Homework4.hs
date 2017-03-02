@@ -4,8 +4,9 @@ import Data.List
 
 sieveSundaram :: Integer -> [Integer]
 sieveSundaram 0 = []
-sieveSundaram n = map (+1) . map (*2) . filter (\x -> notElem x sieve) $ [1..n]
-                    where sieve = map (\(i,j) -> i + j + 2 * i * j) . filter (\(i,j) -> i <= j) $ cartProd [1..n] [1..n]
+sieveSundaram n = map (+1) . map (*2) $ [1..n] \\ sieve
+                    -- NOTE: sieve is too large, won't impact correctness but maybe performance
+                    where sieve = [i + j + 2 * i * j | j <- [1..n], i <- [1..j]]
 
 cartProd :: [a] -> [b] -> [(a, b)]
 cartProd xs ys = [(x,y) | x <- xs, y <- ys]

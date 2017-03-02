@@ -85,6 +85,16 @@ main = hspec $ do
                                 (Node 1 (Node 0 Leaf 'D' Leaf) 'E' Leaf))
             in foldTree "ABCDEFGHIJ" `shouldBe` expected-}
 
+    describe "myFoldl" $ do
+        {-it "returns correct for empty" $
+            let result = myFoldl (\_ x -> x) 1 []
+            in length result `shouldBe` 0-}
+        it "returns correct for single" $
+            myFoldl (+) 1 [1] `shouldBe` foldl (+) 1 [1]
+
+        it "returns correct for multiple" $
+            myFoldl (+) 1 [1..10] `shouldBe` foldl (+) 1 [1..10]
+
     describe "xor" $ do
         it "returns False for empty" $
             xor [] `shouldBe` False
