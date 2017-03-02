@@ -68,22 +68,12 @@ main = hspec $ do
         it "returns single correctly" $
             foldTree "a" `shouldBe` Node 0 Leaf 'a' Leaf
 
-        {-it "returns double correctly" $
+        it "returns double correctly" $
             foldTree "ab" `shouldBe` Node 1 Leaf 'b' (Node 0 Leaf 'a' Leaf)
 
-        it "returns example correctly" $
-            let
-                expected = Node 3
-                              (Node 2
-                                (Node 0 Leaf 'F' Leaf)
-                                'I'
-                                (Node 1 (Node 0 Leaf 'B' Leaf) 'C' Leaf))
-                              'J'
-                              (Node 2
-                                (Node 1 (Node 0 Leaf 'A' Leaf) 'G' Leaf)
-                                'H'
-                                (Node 1 (Node 0 Leaf 'D' Leaf) 'E' Leaf))
-            in foldTree "ABCDEFGHIJ" `shouldBe` expected-}
+        it "returns example correctly (although different to example solution" $
+            let expected = Node 3 (Node 2 (Node 0 Leaf 'C' Leaf) 'H' (Node 1 Leaf 'F' (Node 0 Leaf 'B' Leaf))) 'J' (Node 2 (Node 1 Leaf 'E' (Node 0 Leaf 'A' Leaf)) 'I' (Node 1 Leaf 'G' (Node 0 Leaf 'D' Leaf)))
+            in foldTree "ABCDEFGHIJ" `shouldBe` expected
 
     describe "myFoldl" $ do
         {-it "returns correct for empty" $
