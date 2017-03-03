@@ -20,9 +20,12 @@ before_install:
 env:
   - WEEK_DIR=01-intro
   - WEEK_DIR=02-adt
+  - WEEK_DIR=03-rec-poly
+  - WEEK_DIR=04-higher-order
+  - WEEK_DIR=05-type-classes
 
 install:
   - cd $WEEK_DIR && stack --no-terminal --install-ghc test --only-dependencies
 
 script:
-  - cd $WEEK_DIR && stack --no-terminal test --haddock --no-haddock-deps
+  - stack --no-terminal test --haddock --no-haddock-deps
