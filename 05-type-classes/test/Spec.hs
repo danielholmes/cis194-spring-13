@@ -1,7 +1,12 @@
 import Test.Hspec
-import Calc
 import ExprT
 import Parser
+import StackVM
+import Exercise1
+import Exercise2
+import Exercise3
+import Exercise4
+import Exercise5
 
 testExp :: Expr a => Maybe a
 testExp = parseExp lit add mul "(3 * -4) + 5"
@@ -18,13 +23,13 @@ main = hspec $ do
             eval (Lit 5) `shouldBe` 5
 
         it "should return correct for addition" $
-            eval (Add (Lit 5) (Lit 2)) `shouldBe` 7
+            eval (ExprT.Add (Lit 5) (Lit 2)) `shouldBe` 7
 
         it "should return correct for multiply" $
-            eval (Mul (Lit 3) (Lit 8)) `shouldBe` 24
+            eval (ExprT.Mul (Lit 3) (Lit 8)) `shouldBe` 24
 
         it "should return correct for example" $
-            eval (Mul (Add (Lit 2) (Lit 3)) (Lit 4)) `shouldBe` 20
+            eval (ExprT.Mul (ExprT.Add (Lit 2) (Lit 3)) (Lit 4)) `shouldBe` 20
 
     describe "evalStr" $ do
         it "should return Nothing for empty" $
@@ -45,7 +50,7 @@ main = hspec $ do
     describe "ExprT" $ do
         it "should have equivalent Expr value" $
             let et = mul (add (lit 2) (lit 3)) (lit 4) :: ExprT
-            in et `shouldBe` Mul (Add (Lit 2) (Lit 3)) (Lit 4)
+            in et `shouldBe` ExprT.Mul (ExprT.Add (Lit 2) (Lit 3)) (Lit 4)
 
     describe "Expr Integer" $ do
         it "should eval example correctly" $
@@ -62,3 +67,19 @@ main = hspec $ do
     describe "Expr Mod7" $ do
         it "should eval example correctly" $
             testMod7 `shouldBe` Just (Mod7 0)
+
+    describe "compile" $ do
+        it "should compile simple lit correctly" $
+            fmap stackVM (compile "1") `shouldBe` Just (Right (IVal 1))
+
+        it "should compile simple addition correctly" $
+            fmap stackVM (compile "7+2") `shouldBe` Just (Right (IVal 9))
+
+        it "should compile simple multiplication correctly" $
+            fmap stackVM (compile "4*5") `shouldBe` Just (Right (IVal 20))
+
+        it "should compile multiple op correctly" $
+            fmap stackVM (compile "1+4*5") `shouldBe` Just (Right (IVal 21))
+
+        it "should compile braced multiple op correctly" $
+            fmap stackVM (compile "(1+4)*5") `shouldBe` Just (Right (IVal 25))

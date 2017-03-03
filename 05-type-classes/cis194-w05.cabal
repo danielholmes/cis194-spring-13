@@ -14,7 +14,11 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Calc
+  exposed-modules:     Exercise1
+                     , Exercise2
+                     , Exercise3
+                     , Exercise4
+                     , Exercise5
                      , ExprT
                      , Parser
                      , StackVM
