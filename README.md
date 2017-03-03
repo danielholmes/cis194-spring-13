@@ -27,3 +27,9 @@ Within a week directory after setup:
 ```
 stack test
 ```
+
+Or
+
+```
+stack test --coverage
+```

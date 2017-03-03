@@ -7,6 +7,7 @@ import Exercise2
 import Exercise3
 import Exercise4
 import Exercise5
+import Exercise6
 
 testExp :: Expr a => Maybe a
 testExp = parseExp lit add mul "(3 * -4) + 5"
@@ -19,17 +20,17 @@ testMod7 = testExp :: Maybe Mod7
 main :: IO ()
 main = hspec $ do
     describe "eval" $ do
-        it "should return exact Lit value" $
-            eval (Lit 5) `shouldBe` 5
+        it "should return exact ExprT.Lit value" $
+            eval (ExprT.Lit 5) `shouldBe` 5
 
         it "should return correct for addition" $
-            eval (ExprT.Add (Lit 5) (Lit 2)) `shouldBe` 7
+            eval (ExprT.Add (ExprT.Lit 5) (ExprT.Lit 2)) `shouldBe` 7
 
         it "should return correct for multiply" $
-            eval (ExprT.Mul (Lit 3) (Lit 8)) `shouldBe` 24
+            eval (ExprT.Mul (ExprT.Lit 3) (ExprT.Lit 8)) `shouldBe` 24
 
         it "should return correct for example" $
-            eval (ExprT.Mul (ExprT.Add (Lit 2) (Lit 3)) (Lit 4)) `shouldBe` 20
+            eval (ExprT.Mul (ExprT.Add (ExprT.Lit 2) (ExprT.Lit 3)) (ExprT.Lit 4)) `shouldBe` 20
 
     describe "evalStr" $ do
         it "should return Nothing for empty" $
@@ -50,7 +51,7 @@ main = hspec $ do
     describe "ExprT" $ do
         it "should have equivalent Expr value" $
             let et = mul (add (lit 2) (lit 3)) (lit 4) :: ExprT
-            in et `shouldBe` ExprT.Mul (ExprT.Add (Lit 2) (Lit 3)) (Lit 4)
+            in et `shouldBe` ExprT.Mul (ExprT.Add (ExprT.Lit 2) (ExprT.Lit 3)) (ExprT.Lit 4)
 
     describe "Expr Integer" $ do
         it "should eval example correctly" $
@@ -83,3 +84,13 @@ main = hspec $ do
 
         it "should compile braced multiple op correctly" $
             fmap stackVM (compile "(1+4)*5") `shouldBe` Just (Right (IVal 25))
+
+    describe "HasVars" $ do
+        it "should work with example 1" $
+             (withVars [("x", 6)] $ add (lit 3) (var "x")) `shouldBe` Just 9
+
+        it "should work with example 2" $
+             (withVars [("x", 6)] $ add (lit 3) (var "y")) `shouldBe` Nothing
+
+        it "should work with example 3" $
+             (withVars [("x", 6), ("y", 3)] $ mul (var "x") (add (var "y") (var "x"))) `shouldBe` Just 54
