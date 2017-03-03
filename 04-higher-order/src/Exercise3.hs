@@ -1,4 +1,4 @@
-module Homework3 where
+module Exercise3 where
 
 xor :: [Bool] -> Bool
 xor = foldr (/=) False

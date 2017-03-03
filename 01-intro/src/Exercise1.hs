@@ -1,4 +1,4 @@
-module Homework1 (
+module Exercise1 (
     toDigits, toDigitsRev, doubleEveryOther, sumDigits, validate
 ) where
 

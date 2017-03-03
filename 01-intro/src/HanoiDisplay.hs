@@ -1,7 +1,7 @@
 module HanoiDisplay (largestDisk, boardToStr) where
 
 import Data.List
-import Homework2
+import Exercise2
 
 largestDisk :: HanoiBoard -> Disk
 largestDisk [] = error "No disks"

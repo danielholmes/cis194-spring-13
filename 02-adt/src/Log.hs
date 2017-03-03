@@ -1,4 +1,4 @@
--- CIS 194 Homework 2
+-- CIS 194 Exercise 2
 
 module Log where
 

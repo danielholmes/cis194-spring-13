@@ -1,4 +1,4 @@
-module Homework4 where
+module Exercise4 where
 
 import Data.List
 

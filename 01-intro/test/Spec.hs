@@ -1,6 +1,6 @@
 import Test.HUnit
-import Homework1
-import Homework2
+import Exercise1
+import Exercise2
 import HanoiDisplay
 
 -- Credit Card

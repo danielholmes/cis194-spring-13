@@ -1,4 +1,4 @@
-module Homework2 (
+module Exercise2 (
     hanoi, hanoi4, performMoves, startPositions, Disk, HanoiBoard, NumDisks, PopulatedPeg
 ) where
 

@@ -1,8 +1,8 @@
 import Test.Hspec
-import Homework1
-import Homework2
-import Homework3
-import Homework4
+import Exercise1
+import Exercise2
+import Exercise3
+import Exercise4
 
 main :: IO ()
 main = hspec $ do

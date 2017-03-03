@@ -1,4 +1,4 @@
-module Homework1 where
+module Exercise1 where
 
 fun1 :: [Integer] -> Integer
 fun1 [] = 1
