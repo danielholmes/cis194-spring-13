@@ -34,8 +34,8 @@ instance Expr (M.Map String Integer -> Maybe Integer) where
                                   (Just a, Just b) -> Just (a * b)
                                   _ -> Nothing-}
     -- Must be a nicer way to do this
-    add op1 op2 = \s -> let a = op1 s; b = op2 s in a >>= (\x -> b >>= (\y -> Just (x + y)))
-    mul op1 op2 = \s -> let a = op1 s; b = op2 s in a >>= (\x -> b >>= (\y -> Just (x * y)))
+    add op1 op2 = \s -> let a = op1 s; b = op2 s in a >>= (\x -> fmap (+x) b)
+    mul op1 op2 = \s -> let a = op1 s; b = op2 s in a >>= (\x -> fmap (*x) b)
 
 withVars :: [(String, Integer)]
             -> (M.Map String Integer -> Maybe Integer)
