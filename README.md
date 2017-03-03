@@ -1,5 +1,7 @@
 # CIS194 Exercises and examples
 
+[![Build Status](https://travis-ci.org/danielholmes/cis194-spring-13.svg?branch=master)](https://travis-ci.org/danielholmes/cis194-spring-13)
+
 Exercises from [CIS194 (Spring 13)](http://www.seas.upenn.edu/~cis194/spring13/).
 
 
