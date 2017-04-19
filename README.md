@@ -20,6 +20,14 @@ stack setup
 ```
 
 
+## Running
+
+```
+cd 01-intro
+stack repl
+```
+
+
 ## Running tests
 
 Within a week directory after setup:
