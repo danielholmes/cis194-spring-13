@@ -1,9 +1,11 @@
+{-# LANGUAGE FlexibleContexts #-}
 import Test.Hspec
 import Exercise1
 import Exercise2
 import Exercise3
 import Exercise4
 import Exercise5
+import Exercise6
 
 main :: IO ()
 main = hspec $ do
@@ -72,3 +74,16 @@ main = hspec $ do
     describe "interleaveStreams" $ do
         it "is correct" $
             take 8 (streamToList (interleaveStreams (streamFromSeed (*2) 1) (streamFromSeed succ 10))) `shouldBe` [1, 10, 2, 11, 4, 12, 8, 13]
+
+    describe "Stream Integer" $ do
+        it "fromInteger" $
+            take 4 (streamToList ((fromInteger 1)::(Stream Integer))) `shouldBe` [1, 0, 0, 0]
+
+        it "negate" $
+            take 4 (streamToList (negate (streamRepeat (1::Integer)))) `shouldBe` [(-1), (-1), (-1), (-1)]
+
+        it "+" $
+            take 4 (streamToList (((streamRepeat 2)::(Stream Integer)) + ((streamRepeat 5)::(Stream Integer)))) `shouldBe` [7, 7, 7, 7]
+
+        it "*" $
+            take 4 (streamToList (((streamFromSeed succ 1)::(Stream Integer)) * ((streamRepeat 2)::(Stream Integer)))) `shouldBe` [2, 6, 8, 10]
