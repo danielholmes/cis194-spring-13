@@ -87,3 +87,10 @@ main = hspec $ do
 
         it "*" $
             take 4 (streamToList (((streamFromSeed succ 1)::(Stream Integer)) * ((streamRepeat 2)::(Stream Integer)))) `shouldBe` [2, 6, 8, 10]
+
+        it "/" $
+            take 4 (streamToList (((streamFromSeed (+4) 2)::(Stream Integer)) / ((streamRepeat 2)::(Stream Integer)))) `shouldBe` [1, 2, 2, 4]
+
+    describe "fibs3" $ do
+        it "correct" $
+            take 9 (streamToList fibs3) `shouldBe` [0, 1, 1, 2, 3, 5, 8, 13, 21]

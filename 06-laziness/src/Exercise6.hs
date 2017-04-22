@@ -14,3 +14,10 @@ instance Num (Stream Integer) where
     negate (Stream n ns) = Stream (negate n) (negate ns)
     (+) (Stream x xs) (Stream y ys) = Stream (x + y) (xs + ys)
     (*) (Stream x xs) (Stream y ys) = Stream (x * y) ((streamMap (*x) ys) + (streamMap (*y) xs))
+
+instance Fractional (Stream Integer) where
+    (/) (Stream x xs) (Stream y ys) = q
+        where q = Stream (x `div` y) (streamMap (`div` y) (xs - ys * q))
+
+fibs3 :: Stream Integer
+fibs3 = nats / (1 - nats - (nats * nats))
