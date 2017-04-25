@@ -23,6 +23,7 @@ env:
   - WEEK_DIR=03-rec-poly
   - WEEK_DIR=04-higher-order
   - WEEK_DIR=05-type-classes
+  - WEEK_DIR=06-laziness
 
 install:
   - cd $WEEK_DIR && stack --no-terminal --install-ghc test --only-dependencies
