@@ -21,6 +21,7 @@ library
                      , Exercise4
                      , Exercise5
                      , Exercise6
+                     , Exercise7
   build-depends:       base >= 4.7 && < 5
   default-language:    Haskell2010
 

@@ -6,6 +6,7 @@ import Exercise3
 import Exercise4
 import Exercise5
 import Exercise6
+import Exercise7
 
 main :: IO ()
 main = hspec $ do
@@ -94,3 +95,26 @@ main = hspec $ do
     describe "fibs3" $ do
         it "correct" $
             take 9 (streamToList fibs3) `shouldBe` [0, 1, 1, 2, 3, 5, 8, 13, 21]
+
+    describe "Matrix" $ do
+        it "has multiplication" $
+            ((Matrix 5 3 3 2) * (Matrix 1 1 1 0)) `shouldBe` (Matrix 8 5 5 3)
+
+    describe "fib4" $ do
+        it "0" $
+            (fib4 0) `shouldBe` 0
+
+        it "1" $
+            (fib4 1) `shouldBe` 1
+
+        it "2" $
+            (fib4 2) `shouldBe` 1
+
+        it "3" $
+            (fib4 3) `shouldBe` 2
+
+        it "4" $
+            (fib4 4) `shouldBe` 3
+
+        it "5" $
+            (fib4 5) `shouldBe` 5

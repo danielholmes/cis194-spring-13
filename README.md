@@ -41,3 +41,9 @@ Or
 ```
 stack test --coverage
 ```
+
+
+## TODO
+
+ - Week 1 > 3 pole Hanoi
+ - Week 6 fibs3 stream
