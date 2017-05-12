@@ -14,6 +14,9 @@ import Log
 import Data.Char
 import Data.List
 
+-- Read error log in order
+-- intercalate "\n" . (map (\m -> case m of {(Unknown u) -> u; (LogMessage _ _ m) -> m})) . parse <$> readFile "error.log"
+
 parseMessage :: String -> LogMessage
 parseMessage m = case result of
     Nothing -> Unknown m

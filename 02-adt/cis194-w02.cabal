@@ -2,7 +2,7 @@ name:                cis194-w02
 version:             0.1.0.0
 -- synopsis:
 -- description:
-homepage:            https://github.com/githubuser/cis194-w02#readme
+homepage:            https://github.com/danielholmes/cis194-spring-13
 license:             BSD3
 license-file:        LICENSE
 author:              Daniel Holmes
@@ -10,7 +10,6 @@ maintainer:          daniel@danielholmes.org
 copyright:           2017 Daniel Holmes
 category:            Web
 build-type:          Simple
-extra-source-files:  README.md
 cabal-version:       >=1.10
 
 library

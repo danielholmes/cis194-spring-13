@@ -24,9 +24,11 @@ env:
   - WEEK_DIR=04-higher-order
   - WEEK_DIR=05-type-classes
   - WEEK_DIR=06-laziness
+  - WEEK_DIR=07-folds-monoids
 
 install:
   - cd $WEEK_DIR && stack --no-terminal --install-ghc test --only-dependencies
 
 script:
+  - stack --no-terminal build --pedantic
   - stack --no-terminal test --haddock --no-haddock-deps
