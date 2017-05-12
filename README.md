@@ -7,7 +7,7 @@ Exercises from [CIS194 (Spring 13)](http://www.seas.upenn.edu/~cis194/spring13/)
 
 ## Dependencies
 
- - [Stack](https://www.haskellstack.org/)
+ - [Stack](https://www.haskellstack.org/) - Tested with 1.4.0, GHC 8.0.2
 
 
 ## Setup

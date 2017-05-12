@@ -1,7 +1,5 @@
 module Exercise1 where
 
-import Data.List
-
 fib :: Integer -> Integer
 fib 0 = 0
 fib 1 = 1

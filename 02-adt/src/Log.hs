@@ -2,8 +2,6 @@
 
 module Log where
 
-import Control.Applicative
-
 data MessageType = Info
                  | Warning
                  | Error Int

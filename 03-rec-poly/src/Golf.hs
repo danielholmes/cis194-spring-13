@@ -2,7 +2,6 @@ module Golf where
 
 import Data.List.Split
 import Data.List
-import Data.Char
 
 {-
   We cut the problem up into one iteration for each valid skip amount. i.e. 1 up to the length of the list since

@@ -7,7 +7,7 @@ foldTree = foldr insertIntoTree Leaf
 
 insertIntoTree :: a -> Tree a -> Tree a
 insertIntoTree x Leaf = Node 0 Leaf x Leaf
-insertIntoTree x (Node h left v right)
+insertIntoTree x (Node _ left v right)
     | (treeHeight left) < (treeHeight right) = let newLeft = insertIntoTree x left in Node ((treeHeight newLeft)+1) newLeft v right
     | otherwise = let newRight = insertIntoTree x right in Node ((treeHeight newRight)+1) left v newRight
 

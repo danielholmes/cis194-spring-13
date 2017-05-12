@@ -1,5 +1,5 @@
 {-# LANGUAGE FlexibleInstances #-}
-
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 module Exercise6 where
 
 import qualified Data.Map as M
@@ -40,4 +40,4 @@ instance Expr (M.Map String Integer -> Maybe Integer) where
 withVars :: [(String, Integer)]
             -> (M.Map String Integer -> Maybe Integer)
             -> Maybe Integer
-withVars vs exp = exp $ M.fromList vs
+withVars vs expr = expr $ M.fromList vs
