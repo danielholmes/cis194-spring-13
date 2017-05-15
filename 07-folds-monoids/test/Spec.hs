@@ -1,6 +1,7 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 import Test.Hspec
 import JoinList
+import Buffer
 import Sized
 import Exercise1
 import Exercise2
@@ -34,11 +35,14 @@ main = hspec $ do
         --it "should work for Empties" $
         --    (tag (Single (Sum 2) "a")) `shouldBe` 2
 
+        it "should append when have Empty" $
+            ((Single (Sum 3) "a") +++ Empty) `shouldBe` (Single (Sum 3) "a")
+
+        it "should append when have Empty (reverse)" $
+            (Empty +++ (Single (Sum 3) "a")) `shouldBe` (Single (Sum 3) "a")
+
         it "should append with correct monoid" $
             ((Single (Sum 3) "a") +++ (Single (Sum 2) "b")) `shouldBe` (Append (Sum 5) (Single (Sum 3) "a") (Single (Sum 2) "b"))
-
-        it "should append with correct monoid including Empty" $
-            ((Single (Sum 3) "a") +++ Empty) `shouldBe` (Append (Sum 3) (Single (Sum 3) "a") Empty)
 
     describe "indexJ" $ do
         --it "should return Nothing for empty" $
@@ -93,7 +97,7 @@ main = hspec $ do
                 ab = a +++ b
                 cd = c +++ d
             in
-                (dropJ 1 (Append (Size 4) ab cd)) `shouldBe` (Append (Size 3) (Append (Size 1) Empty b) cd)
+                (dropJ 1 (Append (Size 4) ab cd)) `shouldBe` (Append (Size 3) b cd)
 
         it "drop all but 1 for multiple return correct" $
             let
@@ -104,7 +108,7 @@ main = hspec $ do
                 ab = a +++ b
                 cd = c +++ d
             in
-                (dropJ 3 (Append (Size 4) ab cd)) `shouldBe` (Append (Size 1) Empty d)
+                (dropJ 3 (Append (Size 4) ab cd)) `shouldBe` d
 
     describe "takeJ" $ do
         it "take 0 return empty" $
@@ -126,7 +130,7 @@ main = hspec $ do
                 ab = a +++ b
                 cd = c +++ d
             in
-                (takeJ 1 (Append (Size 4) ab cd)) `shouldBe` (Append (Size 1) a Empty)
+                (takeJ 1 (Append (Size 4) ab cd)) `shouldBe` a
 
         it "take all but 1 for multiple return correct" $
             let
@@ -137,7 +141,7 @@ main = hspec $ do
                 ab = a +++ b
                 cd = c +++ d
             in
-                (takeJ 3 (Append (Size 4) ab cd)) `shouldBe` (Append (Size 3) ab (Append (Size 1) c Empty))
+                (takeJ 3 (Append (Size 4) ab cd)) `shouldBe` (Append (Size 3) ab c)
 
     describe "score" $ do
         it "1 point chars" $
@@ -175,3 +179,96 @@ main = hspec $ do
         it "single word" $
             (scoreLine "yay") `shouldBe` (Single (Score 9) "yay")
 
+    describe "JoinListBuffer toString" $ do
+        --it "Empty is correct" $
+        --    (toString Empty) `shouldBe` ""
+
+        it "Single is correct" $
+            (toString (Single ((Score 2), (Size 1)) "ab")) `shouldBe` "ab"
+
+        it "Append is correct" $
+            (toString (Append (Score 4, Size 2) (Single (Score 3, Size 1) "ab") (Single (Score 1, Size 1) "c"))) `shouldBe` "abc"
+
+    describe "JoinListBuffer fromString" $ do
+        --it "Empty is correct" $
+        --    (fromString "") `shouldBe` Empty
+
+        it "single is correct" $
+            (fromString "Dog") `shouldBe` (Single (Score 5, Size 1) "Dog")
+
+        it "multiple is correct" $
+            let
+                dog = Single (Score 5, Size 1) "Dog"
+                rat = Single (Score 3, Size 1) "Rat"
+            in
+                (fromString "Dog\nRat") `shouldBe` (Append (Score 8, Size 2) dog rat)
+
+    describe "JoinListBuffer line" $ do
+        --it "Empty is correct" $
+        --    (line 0 Empty) `shouldBe` Nothing
+
+        it "valid single is correct" $
+            (line 0 (Single (Score 5, Size 1) "Dog")) `shouldBe` (Just "Dog")
+
+        it "invalid single is correct" $
+            (line 1 (Single (Score 5, Size 1) "Dog")) `shouldBe` Nothing
+
+        it "append valid is correct" $
+            (line 1 (Append (Score 4, Size 2) (Single (Score 3, Size 1) "ab") (Single (Score 1, Size 1) "c"))) `shouldBe` (Just "c")
+
+        it "append valid is incorrect" $
+            (line 2 (Append (Score 4, Size 2) (Single (Score 3, Size 1) "ab") (Single (Score 1, Size 1) "c"))) `shouldBe` Nothing
+
+    describe "JoinListBuffer replaceLine" $ do
+        --it "Empty is correct" $
+        --    (replaceLine 0 "hello" Empty) `shouldBe` Empty
+
+        it "valid single is correct" $
+            (replaceLine 0 "Rat" (Single (Score 5, Size 1) "Dog")) `shouldBe` (Single (Score 3, Size 1) "Rat")
+
+        it "valid append is correct" $
+            let
+                cat = Single (Score 5, Size 1) "Cat"
+                dog = Single (Score 5, Size 1) "Dog"
+                rat = Single (Score 3, Size 1) "Rat"
+            in
+                (replaceLine 1 "Rat" (Append (Score 10, Size 2) dog cat)) `shouldBe` (Append (Score 8, Size 2) dog rat)
+
+        it "valid append complex is correct" $
+            let
+                quick = Single (Score 20, Size 1) "Quick"
+                brown = Single (Score 10, Size 1) "Brown"
+                fox = Single (Score 13, Size 1) "Fox"
+                jumps = Single (Score 16, Size 1) "Jumps"
+                rat = Single (Score 3, Size 1) "Rat"
+                qb = Append (Score 30, Size 2) quick brown
+                qbr = qb +++ rat
+                qbrj = qbr +++ jumps
+                fj = Append (Score 29, Size 2) fox jumps
+                rj = Append (Score 19, Size 2) rat jumps
+                sentence = Append (Score 59, Size 4) qb fj
+            in
+                (replaceLine 2 "Rat" sentence) `shouldBe` qbrj
+
+        it "invalid line number" $
+            (replaceLine 99 "Rat" (Single (Score 5, Size 1) "Dog")) `shouldBe` (Single (Score 5, Size 1) "Dog")
+
+    describe "JoinListBuffer numLines" $ do
+        --it "Empty is correct" $
+        --    (numLines Empty) `shouldBe` 0
+
+        it "single is correct" $
+            (numLines (Single (Score 5, Size 1) "Dog")) `shouldBe` 1
+
+        it "append is correct" $
+            (numLines (Append (Score 4, Size 2) (Single (Score 3, Size 1) "ab") (Single (Score 1, Size 1) "c"))) `shouldBe` 2
+
+    describe "JoinListBuffer value" $ do
+        --it "Empty is correct" $
+        --    (value Empty) `shouldBe` 0
+
+        it "single is correct" $
+            (value (Single (Score 5, Size 1) "Dog")) `shouldBe` 5
+
+        it "append is correct" $
+            (value (Append (Score 4, Size 2) (Single (Score 3, Size 1) "ab") (Single (Score 1, Size 1) "c"))) `shouldBe` 4
