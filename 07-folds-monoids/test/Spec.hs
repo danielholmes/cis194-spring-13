@@ -203,6 +203,17 @@ main = hspec $ do
             in
                 (fromString "Dog\nRat") `shouldBe` (Append (Score 8, Size 2) dog rat)
 
+        it "multiple larger is correct and balanced" $
+            let
+                dog = Single (Score 5, Size 1) "Dog"
+                cat = Single (Score 5, Size 1) "Cat"
+                rat = Single (Score 3, Size 1) "Rat"
+                bat = Single (Score 5, Size 1) "Bat"
+                dogCat = Append (Score 10, Size 2) dog cat
+                ratBat = Append (Score 8, Size 2) rat bat
+            in
+                (fromString "Dog\nCat\nRat\nBat") `shouldBe` (Append (Score 18, Size 4) dogCat ratBat)
+
     describe "JoinListBuffer line" $ do
         --it "Empty is correct" $
         --    (line 0 Empty) `shouldBe` Nothing

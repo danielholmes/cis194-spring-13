@@ -8,6 +8,7 @@ import JoinList
 import Exercise1
 import Exercise2
 import Exercise3
+import Debug.Trace
 
 joinListToString :: JoinList m String -> String
 joinListToString Empty = ""
@@ -25,9 +26,17 @@ mapJoinListTag op (Append m left right) = Append (op m) (mapJoinListTag op left)
 scoreAndSizeLine :: String -> JoinList (Score, Size) String
 scoreAndSizeLine s = mapJoinListTag (\m -> (m, Size 1)) (scoreLine s)
 
+joinLists :: [JoinList (Score, Size) String] -> JoinList (Score, Size) String
+joinLists [] = Empty
+joinLists [x] = x
+joinLists x = (fromLists left) +++ (fromLists right)
+                  where
+                      mid = length x `div` 2
+                      (left, right) = splitAt mid x
+
 instance Buffer (JoinList (Score, Size) String) where
     toString     = joinListToString
-    fromString x = foldr (\a b -> (scoreAndSizeLine a) +++ b) Empty (lines x)
+    fromString   = joinLists . map scoreAndSizeLine . lines
     line         = indexJ
     replaceLine n l b
         | n < numLines b = (takeJ n b) +++ (scoreAndSizeLine l) +++ (dropJ (n + 1) b)

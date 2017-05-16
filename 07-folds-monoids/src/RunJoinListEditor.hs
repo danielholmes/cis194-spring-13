@@ -3,8 +3,12 @@ module RunJoinListEditor where
 import JoinList
 import Sized
 import Exercise3
+import Buffer
 import Exercise4()
 import Editor
 
+initialBuffer :: JoinList (Score, Size) String
+initialBuffer = fromString "This is the initial editor buffer\nNothing to see here...\nHonestly"
+
 joinListEditorMain :: IO ()
-joinListEditorMain = runEditor editor (Single (Score 3, Size 1) "Rat")
+joinListEditorMain = runEditor editor initialBuffer
