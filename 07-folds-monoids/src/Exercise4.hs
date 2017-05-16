@@ -8,7 +8,6 @@ import JoinList
 import Exercise1
 import Exercise2
 import Exercise3
-import Debug.Trace
 
 joinListToString :: JoinList m String -> String
 joinListToString Empty = ""
@@ -29,7 +28,7 @@ scoreAndSizeLine s = mapJoinListTag (\m -> (m, Size 1)) (scoreLine s)
 joinLists :: [JoinList (Score, Size) String] -> JoinList (Score, Size) String
 joinLists [] = Empty
 joinLists [x] = x
-joinLists x = (fromLists left) +++ (fromLists right)
+joinLists x = (joinLists left) +++ (joinLists right)
                   where
                       mid = length x `div` 2
                       (left, right) = splitAt mid x
