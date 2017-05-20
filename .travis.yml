@@ -25,6 +25,7 @@ env:
   - WEEK_DIR=05-type-classes
   - WEEK_DIR=06-laziness
   - WEEK_DIR=07-folds-monoids
+  - WEEK_DIR=08-io
 
 install:
   - cd $WEEK_DIR && stack --no-terminal --install-ghc test --only-dependencies
