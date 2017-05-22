@@ -6,7 +6,5 @@ import Exercise1
 nextLevel :: Employee -> [(GuestList, GuestList)] -> (GuestList, GuestList)
 nextLevel boss divs = (yesBoss, noBoss)
     where
-        divsYesSubBosses = mconcat (map fst divs)
-        divsNoSubBosses = mconcat (map snd divs)
-        yesBoss = glCons boss divsNoSubBosses
-        noBoss = moreFun divsNoSubBosses divsYesSubBosses
+        yesBoss = glCons boss (mconcat (map snd divs))
+        noBoss = mconcat $ map (uncurry moreFun) divs

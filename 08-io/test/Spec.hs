@@ -3,6 +3,7 @@ import Employee
 import Exercise1
 import Exercise2
 import Exercise3
+import Exercise4
 import Data.Tree
 
 main :: IO ()
@@ -56,17 +57,13 @@ main = hspec $ do
 
     describe "treeFold" $ do
         it "processes empty correctly" $
-            (treeFold (\a b -> b) [1] (Node "empty" [])) `shouldBe` [1]
+            (treeFold (\a b -> a + (sum b)) (Node 2 [])) `shouldBe` 2
 
-        it "processes non-empty correctly" $
-            let
-                tree = Node 1
-                    [   Node 2 [Node 3 []],
-                        Node 10
-                        [Node 20 [Node 30 []]]
-                    ]
-            in
-                (treeFold (+) 0 tree) `shouldBe` 66
+        it "processes single correctly" $
+            (treeFold (\a b -> a + (sum b)) (Node 1 [Node 2 []])) `shouldBe` 3
+
+        it "processes multi-branch correctly" $
+            (treeFold (\a b -> a + (sum b)) (Node 1 [Node 10 [], Node 20 []])) `shouldBe` 31
 
     describe "nextLevel" $ do
         it "works for no sub divisions" $
@@ -80,10 +77,29 @@ main = hspec $ do
             in
                 (nextLevel boss [(GL [subBoss] 5, mempty)]) `shouldBe` (GL [boss] 10, GL [subBoss] 5)
 
-        it "works for best sub division" $
+        it "works for not fun sub divisions" $
             let
                 boss = Emp { empName = "Daniel", empFun = 10 }
                 sb1 = Emp { empName = "Minion 1", empFun = 1 }
                 sb2 = Emp { empName = "Minion 2", empFun = 5 }
             in
                 (nextLevel boss [(GL [sb1] 1, mempty), (GL [sb2] 5, mempty)]) `shouldBe` (GL [boss] 10, GL [sb1, sb2] 6)
+
+        it "works for mixture of no boss and sub boss divs" $
+            let
+                boss = Emp { empName = "Daniel", empFun = 1 }
+                notFun = Emp { empName = "Minion 1A", empFun = 10 }
+                notFun2 = Emp { empName = "Minion 1B", empFun = 15 }
+                fun = Emp { empName = "Minion 2A", empFun = 100 }
+                fun2 = Emp { empName = "Minion 2B", empFun = 150 }
+                funNotFun = (GL [fun] 100, GL [notFun] 10)
+                notFunFun = (GL [notFun2] 15, GL [fun2] 150)
+            in
+                (nextLevel boss [funNotFun, notFunFun]) `shouldBe` (GL [boss, notFun, fun2] 161, GL [fun, fun2] 250)
+
+    describe "maxFun" $ do
+        it "works for given example company" $
+            (maxFun testCompany) `shouldBe` (GL [Emp "John" 1, Emp "Sue" 5, Emp "Fred" 3, Emp "Sarah" 17] 26)
+
+        it "works for given example company 2" $
+            (maxFun testCompany2) `shouldBe` (GL [Emp "John" 1, Emp "Sue" 5, Emp "Fred" 3, Emp "Sarah" 17] 26)

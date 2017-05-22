@@ -1,4 +1,6 @@
 module Main where
 
+import Exercise5
+
 main :: IO ()
-main = putStrLn "Hello"
+main = companyMain
